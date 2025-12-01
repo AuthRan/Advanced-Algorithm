@@ -1,41 +1,55 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include <string.h>
 
-typedef struct {
-    int u;
-    int v;
-    int used;
-}Edges;
+struct node {
+    int data;
+    struct node *left;
+    struct node *right;
+};
 
-int main() {
-    int n = 10;
-    int m = 24;
-    Edges edges[m];
-    for(int i=0; i<m; i++) {
-        scanf("%d", &edges[i].u);
-        scanf("%d", &edges[i].v);
-        edges[i].used = 0;
+struct node *createNode(int value) {
+    struct node *newnode = malloc(sizeof(struct node));
+    newnode->data = value;
+    newnode->left = newnode->right = NULL;
+    return newnode;
+}
+struct node *insertNode(struct node *root, int value) {
+    if(root == NULL) {
+        return createNode(value);
     }
-    int cover[100];
-    int k = 0;
-    for(int i=0; i<m; i++) {
-        if(!edges[i].used) {
-            int u = edges[i].u;
-            int v = edges[i].v;
-            cover[k++] = u;
-            cover[k++] = v;
-            edges[i].used = 1;
-            for(int j=0; j<m; j++) {
-                if(!edges[j].used) {
-                    if(edges[j].u == u || edges[j].u == v || edges[j].v == u || edges[j].v == v){
-                        edges[j].used = 1;
-                    }
-                }
-            }
-        }
+    if(value < root->data) {
+        root->left = insertNode(root->left, value);
     }
-    for(int i=0; i<k; i++) {
-        printf("%d ", cover[i]);
+    if(value > root->data) {
+        root->right = insertNode(root->right, value);
+    }
+    return root;
+}
+
+void inorder(struct node *root) {
+    if(root){
+        inorder(root->left);
+        printf("%d ", root->data);
+        inorder(root->right);
     }
 }
+
+int main() {
+    struct node *root = NULL;
+    root = insertNode(root, 50);
+    insertNode(root, 55);
+    insertNode(root, 15);
+    insertNode(root, 75);
+    insertNode(root, 65);
+    insertNode(root, 5);
+    insertNode(root, 58);
+    inorder(root);
+    return 0;
+}
+
+/*
+t = (t*d + (txt[i] - '0'))%q
+if(t==p){
+}
+t = (d * (t - (txt[i] - '0)*h) + (txt[i+m] - '0' )) % q
+*/

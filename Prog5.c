@@ -30,6 +30,7 @@ void search(char pat[], char txt[], int q) {
         p = (d * p + (pat[i] - '0')) % q;
         t = (d * t + (txt[i] - '0')) % q;
     }
+    
 
     printf("Pattern Hash (p) is: %d\n", p);
     printf("Processing Windows...\n");
